@@ -1,6 +1,6 @@
 //Функция для проверки длины строки.
-function checkLengthString (string, number) {
-  return string.length <= number;
+function checkLengthString (string, length) {
+  return string.length <= length;
 }
 
 //Функция для проверки, является ли строка палидромом.
@@ -19,7 +19,8 @@ function getNumbers (string) {
     if (!isNaN(Number(modifiedString[i]))) {
       result += modifiedString[i];
     }
-  } return parseInt(result,10);
+  }
+  return parseInt(result,10);
 }
 
 //Функция для формирования адресов файлов.
