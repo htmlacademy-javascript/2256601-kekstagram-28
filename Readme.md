@@ -1,10 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Николай Бабаркин](https://up.htmlacademy.ru/javascript/28/user/2256601).
-<<<<<<< HEAD
-* Наставник: [Иван Бессалов](https://htmlacademy.ru/profile/lvov)
-=======
-
+* Наставник: [Иван Бессалов](https://htmlacademy.ru/profile/lvov).
 
 ---
 
