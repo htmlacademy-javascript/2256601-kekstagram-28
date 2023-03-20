@@ -30,7 +30,7 @@ const DESCRIPTION_PHOTO_COUNT = 25;
 const AVATAR_COUNT = 6;
 const LIKE_MIN_COUNT = 15;
 const LIKE_MAX_COUNT = 200;
-const COMMENT_COUNT = 20;
+const COMMENT_COUNT = 30;
 const COMMENT_TEXT_COUNT = 2;
 
 const generatePhotoId = createRandomIdFromRangeGenerator(1, DESCRIPTION_PHOTO_COUNT);
