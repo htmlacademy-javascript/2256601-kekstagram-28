@@ -1,3 +1,4 @@
-import {renderPictures} from './rendering.js';
-import {getDescriptionPhoto} from './data.js';
-renderPictures(getDescriptionPhoto());
+import {getDescriptionPhotos} from './data.js';
+import { renderGallery } from './gallery.js';
+
+renderGallery(getDescriptionPhotos());
