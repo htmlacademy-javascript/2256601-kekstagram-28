@@ -27,5 +27,11 @@ const createIdGenerator = () => {
     return lastGeneratedId;
   };
 };
+
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0,elements.length - 1)];
-export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement};
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement, isEscapeKey, isEnterKey};
