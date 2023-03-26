@@ -9,6 +9,7 @@ const renderGallery = (pictures) => {
     if (!picture) {
       return;
     }
+    evt.preventDefault();
     const currentPicture = pictures.find(
       (item) => item.id === Number(picture.dataset.pictureId)
     );
