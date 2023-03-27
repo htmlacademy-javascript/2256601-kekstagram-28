@@ -1,7 +1,6 @@
 import { isEscapeKey} from './util.js';
 import { resetScale } from './scale.js';
 
-const TAG_ERROR_MESSAGE = 'Неверно заполнены хэштеги';
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
 
@@ -16,8 +15,8 @@ const commentInput = document.querySelector('.text__description');
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper',
-});
+  errorTextClass: 'img-upload__field-wrapper_error-text',
+},false);
 const openImg = () => {
   ImgOverlayForm.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -51,11 +50,26 @@ const validateTags = (value) => {
     .filter((tag) => tag.trim().length);
   return validCount(tags) && uniqueHashtags (tags) && tags.every(isValidTag);
 };
+const getErrorMessage = (value) => {
+  let errorMessage = '';
+  const tags = value
+    .trim()
+    .split(' ')
+    .filter((tag) => tag.trim().length);
+  if (!validCount(tags)) {
+    errorMessage = 'Максимальное количество хэштегов не больше 5';
+  } else if (!uniqueHashtags (tags)) {
+    errorMessage = 'Нельзя указывать одинаковые хэштеги';
+  } else if (!tags.every(isValidTag)) {
+    errorMessage = 'Введите валидное значение хэштега';
+  }
+  return errorMessage;
+};
 
 pristine.addValidator(
   hashtegInput,
   validateTags,
-  TAG_ERROR_MESSAGE
+  getErrorMessage,
 );
 
 const onTextFieldKeydown = (field) => {
@@ -70,8 +84,10 @@ onTextFieldKeydown(commentInput);
 onTextFieldKeydown(hashtegInput);
 
 const onUploadFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+    pristine.validate();
+  }
 };
 const onUploadFileInputChange = () => openImg();
 uploadImgInput.addEventListener('change', onUploadFileInputChange);
