@@ -1,5 +1,6 @@
 import { isEscapeKey} from './util.js';
 import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
 
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
@@ -16,7 +17,7 @@ const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper_error-text',
-},false);
+}, false);
 const openImg = () => {
   ImgOverlayForm.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -25,6 +26,7 @@ const openImg = () => {
 const closeImg = () => {
   uploadForm.reset();
   resetScale();
+  resetEffects();
   pristine.reset();
   ImgOverlayForm.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -75,6 +77,7 @@ pristine.addValidator(
 const onTextFieldKeydown = (field) => {
   field.addEventListener('focus', () => {
     document.removeEventListener('keydown', onDocumentKeydown);
+    pristine.reset();
   });
   field.addEventListener('blur', () => {
     document.addEventListener('keydown', onDocumentKeydown);
