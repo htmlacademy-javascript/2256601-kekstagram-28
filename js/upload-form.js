@@ -1,9 +1,14 @@
-import { isEscapeKey} from './util.js';
+import { isEscapeKey, showAlert} from './util.js';
 import { resetScale } from './scale.js';
 import { resetEffects } from './effect.js';
+import { sendData } from './api.js';
 
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Отправляю...'
+};
 
 const uploadForm = document.querySelector('.img-upload__form');
 const ImgOverlayForm = document.querySelector('.img-upload__overlay');
@@ -12,12 +17,23 @@ const uploadImgInput = document.querySelector('.img-upload__input');
 const cancelButton = document.querySelector('.img-upload__cancel');
 const hashtegInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
+const submitButton = uploadForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper_error-text',
 }, false);
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
 const openImg = () => {
   ImgOverlayForm.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -86,14 +102,27 @@ const onTextFieldKeydown = (field) => {
 onTextFieldKeydown(commentInput);
 onTextFieldKeydown(hashtegInput);
 
-const onUploadFormSubmit = (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-    pristine.validate();
-  }
-};
+
 const onUploadFileInputChange = () => openImg();
 uploadImgInput.addEventListener('change', onUploadFileInputChange);
 const onCancelButtonClick = () => closeImg ();
 cancelButton.addEventListener('click', onCancelButtonClick);
-uploadForm.addEventListener('submit', onUploadFormSubmit);
+const setUloadFromSubmit = (onSuccess) => {
+  uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch(
+          (err) => {
+            showAlert(err.message);
+          }
+        )
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+
+export {setUloadFromSubmit, closeImg};
