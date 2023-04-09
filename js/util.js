@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
+const TIMEOUT = 500;
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -64,5 +65,13 @@ const showMessage = (id) => {
   });
 };
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement, isEscapeKey, showAlert, showMessage};
+const debounce = (cb, timeoutDelay = TIMEOUT) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cb.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement, isEscapeKey, showAlert, showMessage, debounce};
 
