@@ -1,7 +1,8 @@
 import { renderGallery } from './gallery.js';
 import { closeImg, setUloadFromSubmit } from './upload-form.js';
 import { getData, sendData} from './api.js';
-import { showAlert, showMessage } from './util.js';
+import { debounce, showAlert, showMessage } from './util.js';
+import { getFilteredPictures, initFilter } from './filter.js';
 
 setUloadFromSubmit(async (data) => {
   try {
@@ -15,7 +16,9 @@ setUloadFromSubmit(async (data) => {
 
 try {
   const data = await getData();
-  renderGallery(data);
+  const debouncedRender = debounce(renderGallery);
+  initFilter(data, debouncedRender);
+  renderGallery(getFilteredPictures());
 } catch (err) {
   showAlert(err.message);
 }
