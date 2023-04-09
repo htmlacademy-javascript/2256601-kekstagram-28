@@ -1,13 +1,13 @@
-import { isEscapeKey, showAlert} from './util.js';
+import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
 import { resetEffects } from './effect.js';
-import { sendData } from './api.js';
+
 
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
-  SENDING: 'Отправляю...'
+  SENDING: 'Публикуется...'
 };
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -102,25 +102,19 @@ const onTextFieldKeydown = (field) => {
 onTextFieldKeydown(commentInput);
 onTextFieldKeydown(hashtegInput);
 
-
 const onUploadFileInputChange = () => openImg();
 uploadImgInput.addEventListener('change', onUploadFileInputChange);
 const onCancelButtonClick = () => closeImg ();
 cancelButton.addEventListener('click', onCancelButtonClick);
-const setUloadFromSubmit = (onSuccess) => {
-  uploadForm.addEventListener('submit', (evt) => {
+
+const setUloadFromSubmit = (cb) => {
+  uploadForm.addEventListener('submit', async (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
-      sendData(new FormData(evt.target))
-        .then(onSuccess)
-        .catch(
-          (err) => {
-            showAlert(err.message);
-          }
-        )
-        .finally(unblockSubmitButton);
+      await cb(new FormData(uploadForm));
+      unblockSubmitButton();
     }
   });
 };

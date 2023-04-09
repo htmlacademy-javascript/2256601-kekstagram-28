@@ -52,5 +52,17 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement, isEscapeKey, showAlert};
+const showMessage = (id) => {
+  const template = document.querySelector(`#${id}`)
+    .content
+    .querySelector(`.${id}`);
+  const Element = template.cloneNode(true);
+  document.body.append(Element);
+  const button = Element.querySelector(`.${id}__button`);
+  button.addEventListener('click', () => {
+    Element.remove();
+  });
+};
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement, isEscapeKey, showAlert, showMessage};
 
