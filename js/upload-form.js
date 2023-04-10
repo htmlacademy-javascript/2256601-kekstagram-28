@@ -5,6 +5,7 @@ import { resetEffects } from './effect.js';
 
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикуется...'
@@ -13,7 +14,9 @@ const SubmitButtonText = {
 const uploadForm = document.querySelector('.img-upload__form');
 const ImgOverlayForm = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
-const uploadImgInput = document.querySelector('.img-upload__input');
+const uploadImgInput = document.querySelector('.img-upload__input[type=file]');
+const uploadPreview = document.querySelector('.img-upload__preview img');
+const effectsPreview = document.querySelectorAll('.effects__preview');
 const cancelButton = document.querySelector('.img-upload__cancel');
 const hashtegInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
@@ -34,10 +37,22 @@ const unblockSubmitButton = () => {
   submitButton.textContent = SubmitButtonText.IDLE;
 };
 
+const uploadPhoto = () => {
+  const file = uploadImgInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    uploadPreview.src = URL.createObjectURL(file);
+    effectsPreview.forEach((effect) => {
+      effect.getElementsByClassName.backgroundImage = `url(${uploadPreview.src})`;
+    });
+  }
+};
 const openImg = () => {
   ImgOverlayForm.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+  uploadPhoto();
 };
 const closeImg = () => {
   uploadForm.reset();
