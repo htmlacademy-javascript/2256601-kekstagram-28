@@ -5,6 +5,7 @@ const cancelButton = document.querySelector('.big-picture__cancel');
 const bigPicture = document.querySelector('.big-picture');
 const commentCount = document.querySelector('.social__comment-count');
 const commentList = document.querySelector('.social__comments');
+const commentItem = document.querySelector('.social__comment');
 const commentsLoader = document.querySelector('.social__comments-loader');
 const body = document.querySelector('body');
 
@@ -18,9 +19,7 @@ const renderBigPicture = ({url, likes, description}) => {
   bigPicture.querySelector('.likes-count').textContent = likes;
 };
 const createComment = ({avatar, name, message}) => {
-  const comment = document.createElement('li');
-  comment.innerHTML = '<img class="social__picture" src="" alt="" width="35" height="35"><p class="social__text"></p>';
-  comment.classList.add('social__comment');
+  const comment = commentItem.cloneNode(true);
   comment.querySelector('.social__picture').src = avatar;
   comment.querySelector('.social__picture').alt = name;
   comment.querySelector('.social__text').textContent = message;

@@ -1,36 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 const TIMEOUT = 500;
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-};
-
-const createIdGenerator = () => {
-  let lastGeneratedId = 0;
-  return function () {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0,elements.length - 1)];
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -57,12 +26,30 @@ const showMessage = (id) => {
   const template = document.querySelector(`#${id}`)
     .content
     .querySelector(`.${id}`);
-  const Element = template.cloneNode(true);
-  document.body.append(Element);
-  const button = Element.querySelector(`.${id}__button`);
+  const element = template.cloneNode(true);
+  document.body.append(element);
+  const button = element.querySelector(`.${id}__button`);
+  const closeMessage = () => {
+    element.remove();
+    document.removeEventListener('keydown', onMessageEscape);
+    document.removeEventListener('click', onOutsideElement);
+  };
+  function onMessageEscape (evt) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closeMessage();
+    }
+  }
+  function onOutsideElement (evt) {
+    if (evt.target === element) {
+      closeMessage();
+    }
+  }
   button.addEventListener('click', () => {
-    Element.remove();
+    closeMessage();
   });
+  document.addEventListener('keydown', onMessageEscape);
+  document.addEventListener('click', onOutsideElement);
 };
 
 const debounce = (cb, timeoutDelay = TIMEOUT) => {
@@ -73,5 +60,5 @@ const debounce = (cb, timeoutDelay = TIMEOUT) => {
   };
 };
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator, getRandomArrayElement, isEscapeKey, showAlert, showMessage, debounce};
+export {isEscapeKey, showAlert, showMessage, debounce};
 
