@@ -1,7 +1,7 @@
 import { renderGallery } from './gallery.js';
-import { closeImg, setUloadFromSubmit } from './upload-form.js';
+import { closeImg, setUloadFromSubmit, showMessage } from './upload-form.js';
 import { getData, sendData} from './api.js';
-import { debounce, showAlert, showMessage } from './util.js';
+import { debounce, showAlert } from './util.js';
 import { getFilteredPictures, initFilter } from './filter.js';
 
 setUloadFromSubmit(async (data) => {
