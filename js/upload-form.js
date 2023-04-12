@@ -12,7 +12,7 @@ const SubmitButtonText = {
 };
 
 const uploadForm = document.querySelector('.img-upload__form');
-const ImgOverlayForm = document.querySelector('.img-upload__overlay');
+const imgOverlayForm = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const uploadImgInput = document.querySelector('.img-upload__input[type=file]');
 const uploadPreview = document.querySelector('.img-upload__preview img');
@@ -49,7 +49,7 @@ const uploadPhoto = () => {
   }
 };
 const openImg = () => {
-  ImgOverlayForm.classList.remove('hidden');
+  imgOverlayForm.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   uploadPhoto();
@@ -59,13 +59,13 @@ const closeImg = () => {
   resetScale();
   resetEffects();
   pristine.reset();
-  ImgOverlayForm.classList.add('hidden');
+  imgOverlayForm.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 };
-
+const isUploadMessage = () => document.querySelector('.success') || document.querySelector('.error');
 function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt)) {
+  if (isEscapeKey(evt) && isUploadMessage() === null) {
     evt.preventDefault();
     closeImg();
   }
