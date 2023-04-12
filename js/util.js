@@ -22,36 +22,6 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const showMessage = (id) => {
-  const template = document.querySelector(`#${id}`)
-    .content
-    .querySelector(`.${id}`);
-  const element = template.cloneNode(true);
-  document.body.append(element);
-  const button = element.querySelector(`.${id}__button`);
-  const closeMessage = () => {
-    element.remove();
-    document.removeEventListener('keydown', onMessageEscape);
-    document.removeEventListener('click', onOutsideElement);
-  };
-  function onMessageEscape (evt) {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      closeMessage();
-    }
-  }
-  function onOutsideElement (evt) {
-    if (evt.target === element) {
-      closeMessage();
-    }
-  }
-  button.addEventListener('click', () => {
-    closeMessage();
-  });
-  document.addEventListener('keydown', onMessageEscape);
-  document.addEventListener('click', onOutsideElement);
-};
-
 const debounce = (cb, timeoutDelay = TIMEOUT) => {
   let timeoutId;
   return (...rest) => {
@@ -60,5 +30,5 @@ const debounce = (cb, timeoutDelay = TIMEOUT) => {
   };
 };
 
-export {isEscapeKey, showAlert, showMessage, debounce};
+export {isEscapeKey, showAlert, debounce};
 
