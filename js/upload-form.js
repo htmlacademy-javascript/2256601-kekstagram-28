@@ -98,8 +98,6 @@ const showMessage = (id) => {
   });
   document.addEventListener('keydown', onMessageEscape);
   document.addEventListener('click', onOutsideElement);
-  onMessageEscape();
-  onOutsideElement();
 };
 
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
