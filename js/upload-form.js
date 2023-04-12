@@ -70,6 +70,38 @@ function onDocumentKeydown (evt) {
     closeImg();
   }
 }
+const closeMessage = () => {
+  isUploadMessage().remove();
+  document.removeEventListener('keydown', onMessageEscape);
+  document.removeEventListener('click', onOutsideElement);
+};
+function onMessageEscape (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+  }
+}
+function onOutsideElement (evt) {
+  if (evt.target === isUploadMessage()) {
+    closeMessage();
+  }
+}
+const showMessage = (id) => {
+  const template = document.querySelector(`#${id}`)
+    .content
+    .querySelector(`.${id}`);
+  const element = template.cloneNode(true);
+  document.body.append(element);
+  const button = element.querySelector(`.${id}__button`);
+  button.addEventListener('click', () => {
+    closeMessage();
+  });
+  document.addEventListener('keydown', onMessageEscape);
+  document.addEventListener('click', onOutsideElement);
+  onMessageEscape();
+  onOutsideElement();
+};
+
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
 const validCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
 const uniqueHashtags = (tags) => {
@@ -134,4 +166,4 @@ const setUloadFromSubmit = (cb) => {
   });
 };
 
-export {setUloadFromSubmit, closeImg};
+export {setUloadFromSubmit, closeImg, showMessage};
