@@ -101,8 +101,8 @@ const showMessage = (id) => {
 };
 
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
-const validCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
-const uniqueHashtags = (tags) => {
+const isValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
+const isUniqueHashtags = (tags) => {
   const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
@@ -111,7 +111,7 @@ const validateTags = (value) => {
     .trim()
     .split(' ')
     .filter((tag) => tag.trim().length);
-  return validCount(tags) && uniqueHashtags (tags) && tags.every(isValidTag);
+  return isValidCount(tags) && isUniqueHashtags (tags) && tags.every(isValidTag);
 };
 const getErrorMessage = (value) => {
   let errorMessage = '';
@@ -119,9 +119,9 @@ const getErrorMessage = (value) => {
     .trim()
     .split(' ')
     .filter((tag) => tag.trim().length);
-  if (!validCount(tags)) {
+  if (!isValidCount(tags)) {
     errorMessage = 'Максимальное количество хэштегов не больше 5';
-  } else if (!uniqueHashtags (tags)) {
+  } else if (!isUniqueHashtags (tags)) {
     errorMessage = 'Нельзя указывать одинаковые хэштеги';
   } else if (!tags.every(isValidTag)) {
     errorMessage = 'Введите валидное значение хэштега';
