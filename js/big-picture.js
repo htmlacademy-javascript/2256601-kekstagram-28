@@ -30,11 +30,9 @@ const renderComments = () => {
   commentsShown += COMMENTS_BATCH;
   if (commentsShown >= comments.length) {
     commentsLoader.classList.add('hidden');
-    commentCount.classList.add('hidden');
     commentsShown = comments.length;
   } else {
     commentsLoader.classList.remove('hidden');
-    commentCount.classList.remove('hidden');
   }
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < commentsShown; i++) {
